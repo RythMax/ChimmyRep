@@ -25,7 +25,7 @@ namespace TomyChimmy.Controllers
             return View();
         }
 
-        [Authorize (Roles = "Manager")]
+        [Authorize (Roles = "User")]
         public IActionResult Privacy()
         {
             return View();

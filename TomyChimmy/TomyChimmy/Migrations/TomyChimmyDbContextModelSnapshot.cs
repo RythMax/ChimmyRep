@@ -231,6 +231,293 @@ namespace TomyChimmy.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("TomyChimmy.Models.Food", b =>
+                {
+                    b.Property<int>("ID_Comidas")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Cantidad")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<string>("Descripción")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
+
+                    b.Property<int>("FoodType_ID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PrecioUnitario")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.HasKey("ID_Comidas");
+
+                    b.HasIndex("FoodType_ID");
+
+                    b.ToTable("Foods");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.FoodType", b =>
+                {
+                    b.Property<int>("FoodType_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Detalle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
+
+                    b.HasKey("FoodType_ID");
+
+                    b.ToTable("FoodTypes");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.Invoice", b =>
+                {
+                    b.Property<int>("Invoice_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("FechaFactura")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Method_Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("ValorImpuesto")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.HasKey("Invoice_ID");
+
+                    b.HasIndex("Method_Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.InvoiceDetail", b =>
+                {
+                    b.Property<int>("InvoiceDetail_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Cantidad")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<int>("ID_Comidas")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Invoice_ID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ValorTotal")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<decimal>("ValorUnitario")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.HasKey("InvoiceDetail_ID");
+
+                    b.HasIndex("ID_Comidas");
+
+                    b.HasIndex("Invoice_ID");
+
+                    b.ToTable("InvoiceDetails");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.Order", b =>
+                {
+                    b.Property<int>("ID_Orden")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Anotaciones")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("DateOrden")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<decimal>("ValorImpuesto")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.HasKey("ID_Orden");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderDetailID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("CantidadDeArticulos")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<int>("ID_Comidas")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ID_Orden")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ValorTotal")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<decimal>("ValorUnitario")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.HasKey("OrderDetailID");
+
+                    b.HasIndex("ID_Comidas");
+
+                    b.HasIndex("ID_Orden");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.PayingMethod", b =>
+                {
+                    b.Property<int>("Method_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FormaDePago")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.HasKey("Method_Id");
+
+                    b.ToTable("PayingMethods");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.Queue", b =>
+                {
+                    b.Property<int>("Pedido_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Anotaciones")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("DatePedido")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Method_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status_ID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Valor_Impuesto")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.HasKey("Pedido_ID");
+
+                    b.HasIndex("Method_Id");
+
+                    b.HasIndex("Status_ID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Queues");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.QueueDetail", b =>
+                {
+                    b.Property<int>("QueueDetail_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Cantidad")
+                        .HasColumnType("decimal (18,2)");
+
+                    b.Property<int>("ID_Comidas")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Pedido_ID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ValorTotal")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.Property<decimal>("ValorUnitario")
+                        .HasColumnType("decimal (18, 2)");
+
+                    b.HasKey("QueueDetail_ID");
+
+                    b.HasIndex("ID_Comidas");
+
+                    b.HasIndex("Pedido_ID");
+
+                    b.ToTable("QueueDetails");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.Status", b =>
+                {
+                    b.Property<int>("Status_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
+
+                    b.HasKey("Status_ID");
+
+                    b.ToTable("Statuses");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -278,6 +565,92 @@ namespace TomyChimmy.Migrations
                     b.HasOne("TomyChimmy.Areas.Identity.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.Food", b =>
+                {
+                    b.HasOne("TomyChimmy.Models.FoodType", "FoodType")
+                        .WithMany()
+                        .HasForeignKey("FoodType_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.Invoice", b =>
+                {
+                    b.HasOne("TomyChimmy.Models.PayingMethod", "PayingMethod")
+                        .WithMany()
+                        .HasForeignKey("Method_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TomyChimmy.Areas.Identity.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.InvoiceDetail", b =>
+                {
+                    b.HasOne("TomyChimmy.Models.Food", "Food")
+                        .WithMany()
+                        .HasForeignKey("ID_Comidas")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TomyChimmy.Models.Invoice", "Invoice")
+                        .WithMany()
+                        .HasForeignKey("Invoice_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.OrderDetail", b =>
+                {
+                    b.HasOne("TomyChimmy.Models.Food", "Food")
+                        .WithMany()
+                        .HasForeignKey("ID_Comidas")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TomyChimmy.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("ID_Orden")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.Queue", b =>
+                {
+                    b.HasOne("TomyChimmy.Models.PayingMethod", "PayingMethod")
+                        .WithMany()
+                        .HasForeignKey("Method_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TomyChimmy.Models.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("Status_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TomyChimmy.Areas.Identity.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("TomyChimmy.Models.QueueDetail", b =>
+                {
+                    b.HasOne("TomyChimmy.Models.Food", "Food")
+                        .WithMany()
+                        .HasForeignKey("ID_Comidas")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TomyChimmy.Models.Queue", "Queue")
+                        .WithMany()
+                        .HasForeignKey("Pedido_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

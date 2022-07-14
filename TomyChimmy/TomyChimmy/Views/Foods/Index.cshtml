@@ -1,0 +1,60 @@
+﻿@model IEnumerable<TomyChimmy.Models.Food>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripción)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FoodType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioUnitario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cantidad)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripción)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoodType.Detalle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioUnitario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cantidad)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID_Comidas">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID_Comidas">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID_Comidas">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
