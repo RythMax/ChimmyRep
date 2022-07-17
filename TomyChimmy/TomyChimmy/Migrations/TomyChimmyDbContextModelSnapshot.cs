@@ -231,6 +231,33 @@ namespace TomyChimmy.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("TomyChimmy.Models.Cart", b =>
+                {
+                    b.Property<string>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ID_Comidas")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PreciodeCarro")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("ID_Comidas");
+
+                    b.ToTable("Carts");
+                });
+
             modelBuilder.Entity("TomyChimmy.Models.Food", b =>
                 {
                     b.Property<int>("ID_Comidas")
@@ -286,14 +313,26 @@ namespace TomyChimmy.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Apellidos")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Dirección")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
                     b.Property<DateTime>("FechaFactura")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<int>("Method_Id")
                         .HasColumnType("int");
+
+                    b.Property<string>("Nombres")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<decimal>("Subtotal")
                         .HasColumnType("decimal (18, 2)");
@@ -302,6 +341,7 @@ namespace TomyChimmy.Migrations
                         .HasColumnType("decimal (18, 2)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("ValorImpuesto")
@@ -431,18 +471,26 @@ namespace TomyChimmy.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Anotaciones")
+                    b.Property<string>("Apellidos")
+                        .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<DateTime>("DatePedido")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Dirección")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("FechaFactura")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Method_Id")
                         .HasColumnType("int");
+
+                    b.Property<string>("Nombres")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<int>("Status_ID")
                         .HasColumnType("int");
@@ -454,9 +502,10 @@ namespace TomyChimmy.Migrations
                         .HasColumnType("decimal (18, 2)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Valor_Impuesto")
+                    b.Property<decimal>("ValorImpuesto")
                         .HasColumnType("decimal (18, 2)");
 
                     b.HasKey("Pedido_ID");
@@ -569,6 +618,15 @@ namespace TomyChimmy.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TomyChimmy.Models.Cart", b =>
+                {
+                    b.HasOne("TomyChimmy.Models.Food", "Food")
+                        .WithMany("Cart")
+                        .HasForeignKey("ID_Comidas")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TomyChimmy.Models.Food", b =>
                 {
                     b.HasOne("TomyChimmy.Models.FoodType", "FoodType")
@@ -588,7 +646,9 @@ namespace TomyChimmy.Migrations
 
                     b.HasOne("TomyChimmy.Areas.Identity.Data.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TomyChimmy.Models.InvoiceDetail", b =>
@@ -609,7 +669,7 @@ namespace TomyChimmy.Migrations
             modelBuilder.Entity("TomyChimmy.Models.OrderDetail", b =>
                 {
                     b.HasOne("TomyChimmy.Models.Food", "Food")
-                        .WithMany()
+                        .WithMany("OrderDetail")
                         .HasForeignKey("ID_Comidas")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -637,7 +697,9 @@ namespace TomyChimmy.Migrations
 
                     b.HasOne("TomyChimmy.Areas.Identity.Data.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TomyChimmy.Models.QueueDetail", b =>

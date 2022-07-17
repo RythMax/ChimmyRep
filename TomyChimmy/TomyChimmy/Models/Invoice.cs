@@ -13,7 +13,7 @@ namespace TomyChimmy.Models
         [Required(ErrorMessage = "El campo {0} es un campo obligatorio")]
         [Display(Name = "Clientes")]
         [ForeignKey("Client")]
-        public int Id { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es un campo obligatorio")]
@@ -45,5 +45,20 @@ namespace TomyChimmy.Models
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal (18, 2)")]
         public decimal Total { get; set; }
+
+        [Display(Name = "Nombres")]
+        [Required(ErrorMessage = "Este campo es necesario")]
+        [MaxLength(100, ErrorMessage = "Maximo cantidad de caracteres")]
+        public string Nombres { get; set; }
+
+        [Display(Name = "Apellidos")]
+        [Required(ErrorMessage = "Este campo es necesario")]
+        [MaxLength(100, ErrorMessage = "Maximo cantidad de caracteres")]
+        public string Apellidos { get; set; }
+
+        [Display(Name = "Dirección")]
+        [Required(ErrorMessage = "Este campo es necesario")]
+        [MaxLength(150, ErrorMessage = "Maxima cantidad de caracteres")]
+        public string Dirección { get; set; }
     }
 }

@@ -17,6 +17,8 @@ namespace TomyChimmy.Data
         {
         }
 
+        public DbSet<Cart> Carts { get; set; }
+
         public DbSet<Food> Foods { get; set; }
 
         public DbSet<FoodType> FoodTypes { get; set; }
@@ -39,10 +41,56 @@ namespace TomyChimmy.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(builder);            
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
     }
 }
+
+//Creo que estas lineas no son necesarias
+
+/*
+            
+            builder.Entity<Cart>(entity =>
+            {
+                //entity.Property(e => e.CartId).IsUnicode(false);
+
+                entity.Property(e => e.Cantidad).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Username).IsUnicode(false);
+
+                builder
+                .Entity<Cart>()
+                .Property(e => e.CartId)
+                .ValueGeneratedOnAdd();
+
+                entity.HasOne(d => d.Food)
+                .WithMany(f => f.Cart)
+                .HasForeignKey(d => d.ID_Comidas)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Cart_ID_Comidas");
+            });
+            
+            builder.Entity<Cart>(entity =>
+            {
+                //entity.Property(e => e.CartId).IsUnicode(false);
+
+                entity.Property(e => e.Cantidad).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Username).IsUnicode(false);
+
+                entity.HasOne(d => d.Food)
+                .WithMany(f => f.Cart)
+                .HasForeignKey(d => d.ID_Comidas)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Cart_ID_Comidas");
+            });
+
+            builder.Entity<FoodType>(entity =>
+            {
+                entity.Property(e => e.Detalle).IsUnicode(false);
+            });
+Pero si se necesitan, estaran en el S1E3 MVC NetCore Part 2
+ */

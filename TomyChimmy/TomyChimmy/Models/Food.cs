@@ -1,10 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TomyChimmy.Models
 {
     public class Food
     {
+        public Food()
+        {
+            Cart = new HashSet<Cart>();
+            OrderDetail = new HashSet<OrderDetail>();
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int ID_Comidas { get; set; }
@@ -35,6 +42,12 @@ namespace TomyChimmy.Models
         [Column(TypeName = "decimal (18, 2)")]
         [DataType(DataType.Currency)]
         public decimal Cantidad { get; set; }
+
+        [InverseProperty("Food")]
+        public virtual ICollection<Cart> Cart { get; set; }
+
+        [InverseProperty("Food")]
+        public virtual ICollection<OrderDetail> OrderDetail { get; set; }
 
         public string ImageFullPath => string.IsNullOrEmpty(ImageUrl)
             ? null

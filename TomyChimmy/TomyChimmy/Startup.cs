@@ -47,6 +47,9 @@ namespace TomyChimmy
             .AddDefaultTokenProviders();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            //Add Session support
+            services.AddSession();
+
             //Revisaré esto luego
             //services.AddAuthentication(options => {options.AddPolicy("rolecreation", policy =>policy.RequireRole("Admin"));});
         }
@@ -71,6 +74,9 @@ namespace TomyChimmy
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //And Use the session
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

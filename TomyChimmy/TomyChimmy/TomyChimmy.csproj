@@ -7,6 +7,20 @@
   <ItemGroup>
     <Compile Remove="Migrations\20220713021644_InitialCreate.cs" />
     <Compile Remove="Migrations\20220713021644_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20220714041913_createdatabase.cs" />
+    <Compile Remove="Migrations\20220714041913_createdatabase.Designer.cs" />
+    <Compile Remove="Migrations\20220716214608_CartOnDB.cs" />
+    <Compile Remove="Migrations\20220716214608_CartOnDB.Designer.cs" />
+    <Compile Remove="Migrations\20220716224347_addingDatabaseGenerated.cs" />
+    <Compile Remove="Migrations\20220716224347_addingDatabaseGenerated.Designer.cs" />
+    <Compile Remove="Migrations\20220717105328_NewQueueandNewOrders.cs" />
+    <Compile Remove="Migrations\20220717105328_NewQueueandNewOrders.Designer.cs" />
+    <Compile Remove="Migrations\20220717105622_NewOrdersQueue.cs" />
+    <Compile Remove="Migrations\20220717105622_NewOrdersQueue.Designer.cs" />
+    <Compile Remove="Migrations\20220717110230_newstuff.cs" />
+    <Compile Remove="Migrations\20220717110230_newstuff.Designer.cs" />
+    <Compile Remove="Migrations\20220717111031_uhhh.cs" />
+    <Compile Remove="Migrations\20220717111031_uhhh.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

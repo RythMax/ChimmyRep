@@ -1,0 +1,73 @@
+﻿@model TomyChimmy.Models.Queue
+
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Checkout</h1>
+
+<h4>Queue</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Checkout">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Method_Id" class="control-label"></label>
+                <select asp-for="Method_Id" class ="form-control" asp-items="ViewBag.Method_Id"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaFactura" class="control-label"></label>
+                <input asp-for="FechaFactura" class="form-control" />
+                <span asp-validation-for="FechaFactura" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subtotal" class="control-label"></label>
+                <input asp-for="Subtotal" class="form-control" />
+                <span asp-validation-for="Subtotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValorImpuesto" class="control-label"></label>
+                <input asp-for="ValorImpuesto" class="form-control" />
+                <span asp-validation-for="ValorImpuesto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Total" class="control-label"></label>
+                <input asp-for="Total" class="form-control" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nombres" class="control-label"></label>
+                <input asp-for="Nombres" class="form-control" />
+                <span asp-validation-for="Nombres" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Apellidos" class="control-label"></label>
+                <input asp-for="Apellidos" class="form-control" />
+                <span asp-validation-for="Apellidos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dirección" class="control-label"></label>
+                <input asp-for="Dirección" class="form-control" />
+                <span asp-validation-for="Dirección" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status_ID" class="control-label"></label>
+                <select asp-for="Status_ID" class ="form-control" asp-items="ViewBag.Status_ID"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

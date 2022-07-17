@@ -23,13 +23,12 @@
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TomyChimmy</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse d-sm-inline-flex flex-sm-row-reverse" id="navbarSupportedContent">
-                    <partial name = "_LoginPartial.cshtml" />
+                    <partial name = "_LoginPartial.cshtml" />                    
                     @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
                     {
                         <form class="d-flex">
-                            <button class="btn btn-outline-dark" type="submit">
-                                <i class="bi-cart-fill me-1"></i>
-                                Cart
+                            <button class="btn btn-outline-dark" asp-area="" asp-controller="Shop" asp-action="Cart">
+                                <i class="bi-cart-fill me-1"></i>Cart
                                 <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                             </button>
                         </form>
@@ -45,12 +44,40 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Shop" asp-action="Index">Shop</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Foods" asp-action="Index">All Products</a></li>
                                     <li><hr class="dropdown-divider" /></li>
-                                    <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                    <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="FoodTypes" asp-action="Index">Tipos de comidas</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Pantalla principal</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Invoices" asp-action="Index">Facturas</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="InvoiceDetails" asp-action="Index">Detalles de facturas</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Orders" asp-action="Index">Ordenes de compra</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="OrderDetails" asp-action="Index">Detalles de compra</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Queues" asp-action="Index">Lista de pedidos</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="QueueDetails" asp-action="Index">Detalles de pedidos</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Role" asp-action="Index">Roles</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Status" asp-action="Index">Estados de comidas</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="UserRoles" asp-action="Index">Usuarios de Roles</a></li>
                                 </ul>
                             </li>
+                        }
+                        else{}
+                    }
+                    else{}
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item"><a class="nav-link active " asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                            </ul>
+                        </li>
                         }
                         else{}
                     }
