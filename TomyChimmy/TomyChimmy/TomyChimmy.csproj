@@ -21,6 +21,10 @@
     <Compile Remove="Migrations\20220717110230_newstuff.Designer.cs" />
     <Compile Remove="Migrations\20220717111031_uhhh.cs" />
     <Compile Remove="Migrations\20220717111031_uhhh.Designer.cs" />
+    <Compile Remove="Migrations\20220717112351_NewDatabase.cs" />
+    <Compile Remove="Migrations\20220717112351_NewDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20220718150957_ColumnQueueCart.cs" />
+    <Compile Remove="Migrations\20220718150957_ColumnQueueCart.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

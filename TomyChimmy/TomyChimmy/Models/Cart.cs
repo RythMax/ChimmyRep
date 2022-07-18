@@ -28,14 +28,16 @@ namespace TomyChimmy.Models
         [StringLength(100)]
         public string Username { get; set; }
 
+
+        [ForeignKey("Queue")]
+        public int Pedido_ID { get; set; }
+        public Queue Queue { get; set; }
+
         /*[Required(ErrorMessage = "El campo {0} es un campo obligatorio")]
         [Display(Name = "Clientes")]
         [ForeignKey("Client")]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; }*/
 
-        [ForeignKey("Queue")]
-        public int Pedido_ID { get; set; }
-        public Queue Queue { get; set; }*/
     }
 }

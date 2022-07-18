@@ -243,6 +243,9 @@ namespace TomyChimmy.Migrations
                     b.Property<int>("ID_Comidas")
                         .HasColumnType("int");
 
+                    b.Property<int>("Pedido_ID")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("PreciodeCarro")
                         .HasColumnType("decimal(18, 2)");
 
@@ -254,6 +257,8 @@ namespace TomyChimmy.Migrations
                     b.HasKey("CartId");
 
                     b.HasIndex("ID_Comidas");
+
+                    b.HasIndex("Pedido_ID");
 
                     b.ToTable("Carts");
                 });
@@ -623,6 +628,12 @@ namespace TomyChimmy.Migrations
                     b.HasOne("TomyChimmy.Models.Food", "Food")
                         .WithMany("Cart")
                         .HasForeignKey("ID_Comidas")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TomyChimmy.Models.Queue", "Queue")
+                        .WithMany()
+                        .HasForeignKey("Pedido_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

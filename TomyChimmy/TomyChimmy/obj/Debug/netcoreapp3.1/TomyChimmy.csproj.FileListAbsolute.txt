@@ -217,3 +217,14 @@ C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Ra
 C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\Shop\Browse.cshtml.g.cs
 C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\Shop\ProductDetails.cshtml.g.cs
 C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\Shop\Cart.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\Shop\Checkout.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\Queues\Create.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\Queues\Delete.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\Queues\Details.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\Queues\Edit.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\Queues\Index.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\QueueDetails\Create.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\QueueDetails\Delete.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\QueueDetails\Details.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\QueueDetails\Edit.cshtml.g.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TomyChimmy\obj\Debug\netcoreapp3.1\Razor\Views\QueueDetails\Index.cshtml.g.cs

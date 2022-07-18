@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TomyChimmy.Controllers
 {
@@ -34,8 +35,8 @@ namespace TomyChimmy.Controllers
             ViewBag.FoodType = detalle;
 
             //get the list of products for the selected category and pass the list to the View
-            var products = _context.Foods.Where(p => p.FoodType.Detalle == detalle).OrderBy (p => p.Descripción).ToList();
-            return View(products);            
+            var products = _context.Foods.Where(p => p.FoodType.Detalle == detalle).OrderBy(p => p.Descripción).ToList();
+            return View(products);
         }
 
 
@@ -58,17 +59,28 @@ namespace TomyChimmy.Controllers
             //Determine Username
             var cartUsername = GetCartUserName();
 
-            //Create and save a new Cart Object
-            var cart = new Cart
+            //Check IF this User's product already exist in the cart. If so, Update the quantity
+            var cartItem = _context.Carts.SingleOrDefault(c => c.ID_Comidas == ID_Comidas && c.Username == cartUsername);
+            if (cartItem == null)
             {
-                ID_Comidas = ID_Comidas,
-                Cantidad = Cantidad,
-                PreciodeCarro = price,
-                Username = cartUsername
-            };
+                //Create and save a new Cart Object
+                var cart = new Cart
+                {
+                    ID_Comidas = ID_Comidas,
+                    Cantidad = Cantidad,
+                    PreciodeCarro = price,
+                    Username = cartUsername
+                };
+                _context.Carts.Add(cart);
+            }
+            else
+            {
+                cartItem.Cantidad += Cantidad; //Add the new quantity to the existing quantity
+                _context.Update(cartItem);
+            }
 
-            _context.Carts.Add(cart);
             _context.SaveChanges();
+
 
             //Show the Cart page
             return RedirectToAction("Cart");
@@ -79,7 +91,7 @@ namespace TomyChimmy.Controllers
         private string GetCartUserName()
         {
             //Check are we alredy stored with username in the User's session
-            if(HttpContext.Session.GetString("CartUserName") == null)
+            if (HttpContext.Session.GetString("CartUserName") == null)
             {
                 //Initialize an empty string variable that will later add to the Session object
                 var cartUsername = "";
@@ -113,7 +125,7 @@ namespace TomyChimmy.Controllers
             return View(cartItems);
         }
 
-        public IActionResult RemoveFromCart (string id)
+        public IActionResult RemoveFromCart(string id)
         {
             //get the object the user wants to delete
             var cartItem = _context.Carts.SingleOrDefault(c => c.CartId == id);
@@ -125,8 +137,76 @@ namespace TomyChimmy.Controllers
             return RedirectToAction("Cart");
         }
 
-        public IActionResult Checkout()
+        [Authorize]
+        public IActionResult Checkout()//Set
         {
+            //Check if the user has been shopping anonymously now they are logged in
+            MigrateCart();
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Checkout([Bind("Nombres, Apellidos, Dirección, Method_Id")] Queue queue)//Get
+        {
+            //autofill the date, User, and total properties instead of the user inputing these values
+            queue.FechaFactura = DateTime.Now;
+            queue.UserId = User.Identity.Name;
+
+            var cartItems = _context.Carts.Where(c => c.Username == User.Identity.Name);
+            decimal cartTotal = (from c in cartItems
+                                 select c.Cantidad * c.PreciodeCarro).Sum();
+            decimal cartImp = Math.Round(Convert.ToDecimal(((double)cartTotal) * 0.18), 2);
+
+            decimal cartTotalImp = cartTotal + cartImp;
+
+            queue.Subtotal = cartTotal;
+            queue.ValorImpuesto = cartImp;
+
+            queue.Total = cartTotalImp;
+
+            //Will need and Extension to the .net core session object to store the Queue Object
+            //HttpContext.Session.SetString("cartImp", cartImp.ToString());
+            //HttpContext.Session.SetString("cartTotal", cartTotal.ToString());
+            //HttpContext.Session.SetString("cartTotalImp", cartTotalImp.ToString());
+
+            //We now have the session to the complex object
+
+            HttpContext.Session.SetObject("Queue", queue);
+
+            return RedirectToAction("Payment");
+        }
+
+        private void MigrateCart()
+        {
+            //if user has shopped without an account. Attach their items to their user name
+            if (HttpContext.Session.GetString("CartUserName") != User.Identity.Name)
+            {
+                var cartUsername = HttpContext.Session.GetString("CartUserName");
+                //get the user's cart items
+                var cartItems = _context.Carts.Where(c => c.Username == cartUsername);
+                //loop through the cart items and update the username for each one
+                foreach (var item in cartItems)
+                {
+                    item.Username = User.Identity.Name;
+                    _context.Update(item);
+                }
+                _context.SaveChanges();
+
+                //Update the session variable from a GUID to the user's email
+                HttpContext.Session.SetString("CartUserName", User.Identity.Name);
+            }
+        }
+
+        public IActionResult Payment()
+        {
+            var queue = HttpContext.Session.GetObject<Queue>("Queue");
+
+            ViewBag.Subtotal = queue.Subtotal;
+            ViewBag.ValorImpuesto = queue.ValorImpuesto;
+            ViewBag.ValorTotal = queue.Total;
+
             return View();
         }
     }
