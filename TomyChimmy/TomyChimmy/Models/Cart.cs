@@ -29,11 +29,11 @@ namespace TomyChimmy.Models
         public string Username { get; set; }
 
 
-        [ForeignKey("Queue")]
+        /*[ForeignKey("Queue")]
         public int Pedido_ID { get; set; }
         public Queue Queue { get; set; }
 
-        /*[Required(ErrorMessage = "El campo {0} es un campo obligatorio")]
+        [Required(ErrorMessage = "El campo {0} es un campo obligatorio")]
         [Display(Name = "Clientes")]
         [ForeignKey("Client")]
         public int UserId { get; set; }

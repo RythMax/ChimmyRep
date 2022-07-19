@@ -1,19 +1,19 @@
-﻿using TomyChimmy.Models;
+﻿using System.Collections.Generic;
 using TomyChimmy.Areas.Identity.Data;
-using System.Collections.Generic;
+using TomyChimmy.Models;
 
 namespace TomyChimmy.ViewModels
 {
-    public class QueueView
+    public class QueueDetailsView
     {
         public Models.Queue Queue { get; set; }
 
-        public Cart Cart { get; set; }
+        public QueueDetail QueueDetail { get; set; }
 
         public PayingMethod PayingMethod { get; set; }
 
         public User User { get; set; }
 
-        public List<Cart> Articulos { get; set; }
+        public List<QueueDetail> Artículos { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace TomyChimmy.Controllers
         public IActionResult Create()
         {
             ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción");
-            ViewData["Pedido_ID"] = new SelectList(_context.Queues, "Pedido_ID", "Apellidos");
+            ViewData["Pedido_ID"] = new SelectList(_context.Queues, "Pedido_ID", "UserId");
             return View();
         }
 
@@ -64,11 +64,30 @@ namespace TomyChimmy.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(queueDetail);
+
+                int id = queueDetail.Pedido_ID;
+                int id_food = queueDetail.Pedido_ID;
+
+                Food food = _context.Foods.Find(id_food);
+                decimal preciou = queueDetail.Food.PrecioUnitario;
+                decimal cantidad = queueDetail.Cantidad;
+                decimal preciot = preciou * cantidad;
+
+                queueDetail.ValorUnitario = preciou;
+                queueDetail.ValorTotal = preciot;
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                Queue queue = _context.Queues.Find(id);
+                queue.Subtotal += preciot;
+                queue.ValorImpuesto = 0;
+                queue.Total += preciot;
+                _context.Update(queue);
+                _context.SaveChanges();
+                return View(queueDetail);
             }
             ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", queueDetail.ID_Comidas);
-            ViewData["Pedido_ID"] = new SelectList(_context.Queues, "Pedido_ID", "Apellidos", queueDetail.Pedido_ID);
+            ViewData["Pedido_ID"] = new SelectList(_context.Queues, "Pedido_ID", "UserId", queueDetail.Pedido_ID);
             return View(queueDetail);
         }
 
@@ -86,7 +105,7 @@ namespace TomyChimmy.Controllers
                 return NotFound();
             }
             ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", queueDetail.ID_Comidas);
-            ViewData["Pedido_ID"] = new SelectList(_context.Queues, "Pedido_ID", "Apellidos", queueDetail.Pedido_ID);
+            ViewData["Pedido_ID"] = new SelectList(_context.Queues, "Pedido_ID", "UserId", queueDetail.Pedido_ID);
             return View(queueDetail);
         }
 
@@ -123,7 +142,7 @@ namespace TomyChimmy.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", queueDetail.ID_Comidas);
-            ViewData["Pedido_ID"] = new SelectList(_context.Queues, "Pedido_ID", "Apellidos", queueDetail.Pedido_ID);
+            ViewData["Pedido_ID"] = new SelectList(_context.Queues, "Pedido_ID", "UserId", queueDetail.Pedido_ID);
             return View(queueDetail);
         }
 

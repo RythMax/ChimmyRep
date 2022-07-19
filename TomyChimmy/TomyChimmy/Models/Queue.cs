@@ -47,21 +47,17 @@ namespace TomyChimmy.Models
         public decimal Total { get; set; }
 
         [Display(Name = "Nombres")]
-        [Required(ErrorMessage = "Este campo es necesario")]
         [MaxLength(100, ErrorMessage = "Maximo cantidad de caracteres")]
         public string Nombres { get; set; }
 
         [Display(Name = "Apellidos")]
-        [Required(ErrorMessage = "Este campo es necesario")]
         [MaxLength(100, ErrorMessage = "Maximo cantidad de caracteres")]
         public string Apellidos { get; set; }
 
         [Display(Name = "Dirección")]
-        [Required(ErrorMessage = "Este campo es necesario")]
         [MaxLength(150, ErrorMessage = "Maxima cantidad de caracteres")]
         public string Dirección { get; set; }
 
-        [Required(ErrorMessage = "El campo {0} es un campo obligatorio")]
         [Display(Name = "Estado del pedido")]
         [ForeignKey("Status")]
         public int Status_ID { get; set; }

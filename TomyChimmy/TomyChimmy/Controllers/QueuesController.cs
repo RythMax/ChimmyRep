@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TomyChimmy.Data;
 using TomyChimmy.Models;
+using TomyChimmy.ViewModels;
 
 namespace TomyChimmy.Controllers
 {
@@ -43,8 +44,23 @@ namespace TomyChimmy.Controllers
             {
                 return NotFound();
             }
+            var QueueDetailsView = new QueueDetailsView();
+            var queueDetail = new QueueDetail();
+            
+            QueueDetailsView.Queue = await _context.Queues
+                .Include(q => q.PayingMethod)
+                .Include(q => q.Status)
+                .Include(q => q.User)
+                .FirstOrDefaultAsync(m => m.Pedido_ID == id);
+            var dataQD = _context.QueueDetails.Include(qd => qd.Queue).Include(qd => qd.Food).Where(qd => qd.Pedido_ID.Equals(id)).ToList();
 
-            return View(queue);
+            QueueDetailsView.Artículos = dataQD;
+
+            ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", queueDetail.ID_Comidas);
+            ViewData["Pedido_ID"] = new SelectList(_context.Invoices, "Pedido_ID", "Pedido_ID", queueDetail.Pedido_ID);
+
+
+            return View(QueueDetailsView);
         }
 
         // GET: Queues/Create
@@ -168,5 +184,47 @@ namespace TomyChimmy.Controllers
         {
             return _context.Queues.Any(e => e.Pedido_ID == id);
         }
+
+        public async Task<IActionResult> _AdicionarArticulo([Bind("QueueDetail_ID,ID_Comidas,Cantidad,ValorUnitario,ValorTotal,Pedido_ID")] QueueDetail queueDetail)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(queueDetail);
+
+                int id = queueDetail.Pedido_ID;
+
+                int ID_Comidas = queueDetail.ID_Comidas;
+
+                Models.Food articulos = _context.Foods.Find(ID_Comidas);
+
+                decimal preciou = articulos.PrecioUnitario;
+                decimal cantidad = queueDetail.Cantidad;
+
+                decimal preciot = cantidad * preciou;
+
+                decimal impuesto = Math.Round(Convert.ToDecimal(((double)preciot) * 0.18), 2);
+
+                queueDetail.ValorUnitario = preciou;
+                queueDetail.ValorTotal = preciot;
+
+                await _context.SaveChangesAsync();
+                Models.Queue queue = _context.Queues.Find(id);
+                queue.Subtotal += preciot;
+                queue.ValorImpuesto = impuesto;
+                queue.Total = preciot + impuesto;
+                articulos.Cantidad += queueDetail.Cantidad;
+                _context.Update(articulos);
+                _context.SaveChanges();
+
+
+                return RedirectToAction("Details", new { id = id });
+            }
+            ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", queueDetail.ID_Comidas);
+            ViewData["Invoice_ID"] = new SelectList(_context.Invoices, "Pedido_ID", "Pedido_ID", queueDetail.Pedido_ID);
+            return View(queueDetail);
+        }
+
     }
 }
+
+

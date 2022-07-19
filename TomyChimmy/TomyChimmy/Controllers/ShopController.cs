@@ -6,6 +6,11 @@ using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using TomyChimmy.Areas.Identity.Data;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace TomyChimmy.Controllers
 {
@@ -13,10 +18,12 @@ namespace TomyChimmy.Controllers
     {
         //add db conection
         private readonly TomyChimmyDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public ShopController(TomyChimmyDbContext context)
+        public ShopController(TomyChimmyDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         //Get: /Shop
@@ -53,6 +60,8 @@ namespace TomyChimmy.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddToCart(int Cantidad, int ID_Comidas)
         {
+            //Create a variable for products in cart
+
             //Identify product price
             var product = _context.Foods.SingleOrDefault(p => p.ID_Comidas == ID_Comidas);
             var price = product.PrecioUnitario;
@@ -79,7 +88,7 @@ namespace TomyChimmy.Controllers
                 _context.Update(cartItem);
             }
 
-            _context.SaveChanges();
+             _context.SaveChanges();
 
 
             //Show the Cart page
@@ -91,7 +100,7 @@ namespace TomyChimmy.Controllers
         private string GetCartUserName()
         {
             //Check are we alredy stored with username in the User's session
-            if (HttpContext.Session.GetString("CartUserName") == null)
+            if (HttpContext.Session.GetString("CartUserName") != User.Identity.Name)
             {
                 //Initialize an empty string variable that will later add to the Session object
                 var cartUsername = "";
@@ -142,30 +151,35 @@ namespace TomyChimmy.Controllers
         {
             //Check if the user has been shopping anonymously now they are logged in
             MigrateCart();
+
+            ViewData["Method_Id"] = new SelectList(_context.PayingMethods, "Method_Id", "FormaDePago");
+            ViewData["Status_ID"] = new SelectList(_context.Statuses, "Status_ID", "Descripcion");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            //Nuevo objetivo, hacer que los id_producto del carrito coincidan con los de un queue detail asi es como se realizaría la venta de todo, luego borrar carrito si es posible
+
             return View();
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Checkout([Bind("Nombres, Apellidos, Dirección, Method_Id")] Queue queue)//Get
+        public async Task<IActionResult> Checkout([Bind("Pedido_ID,UserId,Method_Id,FechaFactura,Subtotal,ValorImpuesto,Total,Nombres,Apellidos,Dirección,Status_ID")] Queue queue)//Get
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            queue.Nombres = user.Nombres;
+            queue.Apellidos = user.Apellidos;
+            queue.Dirección = user.Dirección;
             //autofill the date, User, and total properties instead of the user inputing these values
             queue.FechaFactura = DateTime.Now;
-            queue.UserId = User.Identity.Name;
-
+            queue.UserId = user.Id;
             var cartItems = _context.Carts.Where(c => c.Username == User.Identity.Name);
             decimal cartTotal = (from c in cartItems
                                  select c.Cantidad * c.PreciodeCarro).Sum();
             decimal cartImp = Math.Round(Convert.ToDecimal(((double)cartTotal) * 0.18), 2);
-
             decimal cartTotalImp = cartTotal + cartImp;
-
             queue.Subtotal = cartTotal;
             queue.ValorImpuesto = cartImp;
-
             queue.Total = cartTotalImp;
-
             //Will need and Extension to the .net core session object to store the Queue Object
             //HttpContext.Session.SetString("cartImp", cartImp.ToString());
             //HttpContext.Session.SetString("cartTotal", cartTotal.ToString());
@@ -175,7 +189,7 @@ namespace TomyChimmy.Controllers
 
             HttpContext.Session.SetObject("Queue", queue);
 
-            return RedirectToAction("Payment");
+            return RedirectToAction("SaleOrder");
         }
 
         private void MigrateCart()
@@ -199,15 +213,60 @@ namespace TomyChimmy.Controllers
             }
         }
 
-        public IActionResult Payment()
+        public IActionResult SaleOrder()
         {
             var queue = HttpContext.Session.GetObject<Queue>("Queue");
 
-            ViewBag.Subtotal = queue.Subtotal;
-            ViewBag.ValorImpuesto = queue.ValorImpuesto;
-            ViewBag.ValorTotal = queue.Total;
+            _context.Add(queue);
+            _context.SaveChanges();
 
-            return View();
+            var cartUsername = HttpContext.Session.GetString("CartUserName");
+            var cartItems = _context.Carts.Where(c => c.Username == cartUsername).ToList();
+
+            foreach(var item in cartItems)
+            {
+                Models.Food articulos = _context.Foods.Find(item.ID_Comidas);
+                var ValorUnitario = articulos.PrecioUnitario;
+                //Create a new queueDetail
+                var queueDetail = new QueueDetail
+                {
+                    Pedido_ID = queue.Pedido_ID,
+                    ID_Comidas = item.ID_Comidas,
+                    Cantidad = item.Cantidad,
+                    ValorUnitario = ValorUnitario,
+                    ValorTotal = item.PreciodeCarro
+                };                                
+                //Add to the database
+                _context.QueueDetails.Add(queueDetail);                
+            }
+            _context.SaveChanges();
+
+            foreach (var item in cartItems)
+            {
+                _context.Carts.Remove(item);
+            }
+            _context.SaveChanges();
+           
+            return RedirectToAction("Details", "Queues", new {id = queue.Pedido_ID});
         }
+
+        /*public async Task<IActionResult> SaleOrder([Bind("InvoiceDetail_ID,ID_Comidas,Cantidad,ValorUnitario,ValorTotal,Invoice_ID")] QueueDetail queueDetail)
+          {
+              var cartUsername = HttpContext.Session.GetString("CartUserName");
+              var cartItems = _context.Carts.Where(c => c.Username == cartUsername).ToList();
+              //We check every cart and IF the username coincides with the identity name we convert that cart to a QueueDetail and the DELETE the cart
+              foreach (var item in cartItems)
+              {
+                  queueDetail.Pedido_ID = queue.Pedido_ID;
+                  queueDetail.Cantidad = item.Cantidad;
+                  queueDetail.ID_Comidas = item.ID_Comidas;
+                  Models.Food articulos = _context.Foods.Find(item.ID_Comidas);
+                  queueDetail.ValorUnitario = articulos.PrecioUnitario;
+                  queueDetail.ValorTotal = item.PreciodeCarro;
+
+              }
+
+              return View(queueDetail);
+          }*/
     }
 }

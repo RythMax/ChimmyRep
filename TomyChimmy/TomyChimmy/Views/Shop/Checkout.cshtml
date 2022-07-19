@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Checkout";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Patata"] = 1;
 }
 
 <h1>Checkout</h1>
@@ -18,19 +19,8 @@
                 <select asp-for="Method_Id" class ="form-control" asp-items="ViewBag.Method_Id"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Nombres" class="control-label"></label>
-                <input asp-for="Nombres" class="form-control" />
-                <span asp-validation-for="Nombres" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Apellidos" class="control-label"></label>
-                <input asp-for="Apellidos" class="form-control" />
-                <span asp-validation-for="Apellidos" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Dirección" class="control-label"></label>
-                <input asp-for="Dirección" class="form-control" />
-                <span asp-validation-for="Dirección" class="text-danger"></span>
+                <label asp-for="Status_ID" class="control-label"></label>
+                <input asp-for ="Status_ID" class="form-control" value="@ViewData["Patata"].ToString()"/>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -43,3 +33,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
