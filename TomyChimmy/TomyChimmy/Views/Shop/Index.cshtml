@@ -8,14 +8,19 @@
 <h1>Browse Our Shop</h1>
 
 <section>
-    <div class="row">
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
         @foreach (var item in Model)
         {
             <div class="col-sm-6 col-lg-4 mb-3">
                 <div class="card mb-3 text-center h-100">
-                    <div class="card-body">
-                        <a asp-controller = "Shop" asp-action="Browse" asp-route-detalle="@item.Detalle">@item.Detalle</a>
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                        <h5 class="fw-bolder">@item.Detalle</h5>
+                        </div>
+                    </div>
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" asp-controller = "Shop" asp-action="Browse" asp-route-detalle="@item.Detalle">Ver @item.Detalle</a></div>
                     </div>
                 </div>
             </div>

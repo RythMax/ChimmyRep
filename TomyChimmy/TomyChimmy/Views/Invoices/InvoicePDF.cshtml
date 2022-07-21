@@ -1,0 +1,167 @@
+﻿@model TomyChimmy.ViewModels.InvoiceViewModel
+@{
+    ViewData["Title"] = "InvoicePDF";
+    var id = Model.Invoice.Invoice_ID;
+    Layout = null;
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>@ViewData["Title"] - TomyChimmy</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/shoppages/css/styles.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+</head>
+
+<div class="card bg-secondary">
+    <div class="col-md-12 col-sm-12">
+        <div class="X_panel">
+            <div class="card-title">
+            </div>
+            <h2 class="text-black text-white">Factura @Html.DisplayFor(model => model.Invoice.Invoice_ID)</h2>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="clearfix"> </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="X_panel">
+                <div class="x_content">
+                    <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-aling" for="first-name">
+                        @Html.DisplayNameFor(model => model.Invoice.Nombres)
+                    </label>
+                    <label class="col-md-6 col-sm-6 form-control" style="background-color:gainsboro;">
+                        @Html.DisplayFor(model => model.Invoice.Nombres)
+                    </label>
+                </div>
+
+                <div class="item form-group ">
+                    <label class="col-form-label col-md-3 col-sm-3 label-aling" for="first-name">
+                        @Html.DisplayNameFor(model => model.Invoice.PayingMethod.FormaDePago)
+                    </label>
+                    <label class="col-md-6 col-sm-6 form-control" style="background-color:gainsboro;">
+                        @Html.DisplayFor(model => model.Invoice.PayingMethod.FormaDePago)
+                    </label>
+                </div>
+
+                <div class="item form-group ">
+                    <label class="col-form-label col-md-3 col-sm-3 label-aling" for="first-name">
+                        @Html.DisplayNameFor(model => model.Invoice.FechaFactura)
+                    </label>
+                    <label class="col-md-6 col-sm-6 form-control" style="background-color:gainsboro;">
+                        @Html.DisplayFor(model => model.Invoice.FechaFactura.Date)
+                    </label>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="col-md-12 col-sm-12">
+        <div class="X_panel">
+            <div class="x_title">
+                <h2>Articulos para esta Orden</h2>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card-box table-responsive">
+                            <table id="grid" name="grid" class="table table-striped table-bordered">
+
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Precio Unitario</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Total</th>
+                                        <th>En Inventario</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="data">
+                                    @foreach (var item in Model.Articulos)
+                                    {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Food.ID_Comidas)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Food.Descripción)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ValorUnitario)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Cantidad)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ValorTotal)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Food.Cantidad)
+                                        </td>
+                                    </tr>
+                                    }
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5" style="text-align:right;">@Html.DisplayNameFor(model => model.Invoice.Subtotal)</td>
+                                        <td style="text-align:right;" class="subtotal">@Html.DisplayFor(model => model.Invoice.Subtotal)</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align:right;">@Html.DisplayNameFor(model => model.Invoice.ValorImpuesto)</td>
+                                        <td style="text-align:right;" class="valori">@Html.DisplayFor(model => model.Invoice.ValorImpuesto)</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align:right;">@Html.DisplayNameFor(model => model.Invoice.Total)</td>
+                                        <td style="text-align:right;" class="valort">@Html.DisplayFor(model => model.Invoice.Total)</td>
+                                    </tr>
+                                    <tr></tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<hr/>
+
+<div>
+    <p class="m-2 p-2">Nota no se Aceptan deboluciones sin la Factura , gracias por su compra!!!</p>
+</div>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<script>
+$(document).ready(function() {
+    window.print()
+});
+</script>

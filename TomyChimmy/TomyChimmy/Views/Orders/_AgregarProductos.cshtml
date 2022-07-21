@@ -1,0 +1,33 @@
+﻿@model TomyChimmy.Models.OrderDetail
+
+<h4>Detalle Ordenes</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="_AgregarProductos">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ID_Comidas" class="control-label"></label>
+                <select asp-for="ID_Comidas" class ="form-control" asp-items="ViewBag.ID_Comidas"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CantidadDeArticulos" class="control-label"></label>
+                <input asp-for="CantidadDeArticulos" class="form-control" />
+                <span asp-validation-for="CantidadDeArticulos" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group" style="display:none;">
+                <label asp-for="ID_Orden" class="control-label"></label>
+                <input asp-for="ID_Orden" class ="form-control" value="@ViewData["id"].ToString()"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-outline-dark mt-auto" />
+                @*<input type="submit" value="Create" class="btn btn-primary" />*@
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }

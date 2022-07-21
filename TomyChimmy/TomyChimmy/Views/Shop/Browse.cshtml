@@ -8,17 +8,28 @@
 <h1>Shop our @ViewBag.FoodType</h1>
 
 <section>
-    <div class="row">
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
         @foreach(var item in Model)
         {
-            <div class="col-sm-6 col-lg-4 mb-3">
-                <div class="card-mb-3 text-center h-100">
-                    <div class="card-body">
-                        <a asp-controller="Shop" asp-action="ProductDetails" asp-route-products="@item.Descripción">@item.Descripción</a>
-                        <h5> @String.Format("RD$" + item.PrecioUnitario) </h5>
-                    </div>
+            <div class="col mb-5">
+            <div class="card h-100">
+                <!-- Product image-->
+                <img class="card-img-top" src="@item.ImageUrl" alt="..." />
+                <!-- Product details-->
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        <!-- Product name-->
+                        <h5 class="fw-bolder">@item.Descripción</h5>
+                        <!-- Product price-->
+                        @String.Format("RD$" + item.PrecioUnitario)
+                </div>
+                </div>
+                <!-- Product actions-->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" asp-controller = "Shop" asp-action="ProductDetails" asp-route-products="@item.Descripción">Ver Producto</a></div>
                 </div>
             </div>
+        </div>
         }
     </div>
 </section>

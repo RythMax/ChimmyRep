@@ -64,8 +64,27 @@ namespace TomyChimmy.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(orderDetail);
+
+                int id = orderDetail.ID_Orden;
+                int id_food = orderDetail.ID_Comidas;
+
+                Food food = _context.Foods.Find(id_food);
+                decimal preciou = orderDetail.Food.PrecioUnitario;
+                decimal cantidad = orderDetail.CantidadDeArticulos;
+                decimal preciot = preciou * cantidad;
+
+                orderDetail.ValorUnitario = preciou;
+                orderDetail.ValorTotal = preciot;
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                Order order = _context.Orders.Find(id);
+                order.Subtotal += preciot;
+                order.ValorImpuesto += Math.Round(Convert.ToDecimal(((double)preciot) * 0.18), 2);
+                order.Total += preciot;
+                _context.Update(order);
+                _context.SaveChanges();
+                return View(orderDetail);
             }
             ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", orderDetail.ID_Comidas);
             ViewData["ID_Orden"] = new SelectList(_context.Orders, "ID_Orden", "Anotaciones", orderDetail.ID_Orden);

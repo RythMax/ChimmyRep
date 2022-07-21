@@ -25,7 +25,7 @@ namespace TomyChimmy.Models
         [Required(ErrorMessage = "El campo {0} es un campo obligatorio")]
         [Display(Name = "Fecha de Factura")]
         [DisplayFormat(DataFormatString = "0:MM/dd/yyyy")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime FechaFactura { get; set; }
 
         [Display(Name = "Subtotal")]

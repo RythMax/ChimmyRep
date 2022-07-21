@@ -56,7 +56,7 @@
                 @Html.DisplayFor(modelItem => item.PayingMethod.FormaDePago)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaFactura)
+                @Html.DisplayFor(modelItem => item.FechaFactura.Date)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Subtotal)
@@ -80,10 +80,14 @@
                 @Html.DisplayFor(modelItem => item.Status.Descripcion)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Pedido_ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Pedido_ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Pedido_ID">Delete</a>
-            </td>
+                <a class="btn btn-outline-dark mt-auto" asp-action="Details" asp-route-id="@item.Pedido_ID">Details</a> |
+                @if (User.IsInRole("Manager"))
+                    {
+                        <a class="btn btn-outline-dark mt-auto" asp-action="Edit" asp-route-id="@item.Pedido_ID">Edit</a> 
+                        <a class="btn btn-outline-dark mt-auto" asp-action="Delete" asp-route-id="@item.Pedido_ID">Delete</a>
+                    }
+                else{}
+                </td>
         </tr>
 }
     </tbody>

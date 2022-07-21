@@ -19,8 +19,8 @@
                 <select asp-for="Method_Id" class ="form-control" asp-items="ViewBag.Method_Id"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Status_ID" class="control-label"></label>
-                <input asp-for ="Status_ID" class="form-control" value="@ViewData["Patata"].ToString()"/>
+                <label asp-for="Status_ID" class="control-label" type="hidden"></label>
+                <input asp-for ="Status_ID" class="form-control" value="@ViewData["Patata"].ToString()" type="hidden"/>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -30,7 +30,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-outline-dark mt-auto" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

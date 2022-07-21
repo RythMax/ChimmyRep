@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TomyChimmy.Data;
 using TomyChimmy.Models;
+using TomyChimmy.ViewModels;
 
 namespace TomyChimmy.Controllers
 {
@@ -39,8 +40,19 @@ namespace TomyChimmy.Controllers
             {
                 return NotFound();
             }
+            var OrderViewModel = new OrderViewModel();
+            var orderDetail = new OrderDetail();
 
-            return View(order);
+            OrderViewModel.Order = await _context.Orders
+                .FirstOrDefaultAsync(m => m.ID_Orden == id);
+            var dataOD = _context.OrderDetails.Include(qd => qd.Order).Include(qd => qd.Food).Where(qd => qd.ID_Orden.Equals(id)).ToList();
+
+            OrderViewModel.Artículos = dataOD;
+
+            ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", orderDetail.ID_Comidas);
+            ViewData["ID_Orden"] = new SelectList(_context.Orders, "ID_Orden", "Anotaciones", orderDetail.ID_Orden);
+            return View(OrderViewModel);
+
         }
 
         // GET: Orders/Create
@@ -149,5 +161,71 @@ namespace TomyChimmy.Controllers
         {
             return _context.Orders.Any(e => e.ID_Orden == id);
         }
+
+        public async Task<IActionResult> _AgregarProductos([Bind("OrderDetailID,ID_Comidas,CantidadDeArticulos,ValorUnitario,ValorTotal,ID_Orden")] OrderDetail orderDetail)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(orderDetail);
+
+                int id = orderDetail.ID_Orden;
+                int id_food = orderDetail.ID_Comidas;
+
+                Food articulos = _context.Foods.Find(id_food);
+
+                decimal preciou = articulos.PrecioUnitario;
+                decimal cantidad = orderDetail.CantidadDeArticulos;
+
+                decimal preciot = cantidad * preciou;
+
+                orderDetail.ValorUnitario = preciou;
+                orderDetail.ValorTotal = preciot;
+
+                await _context.SaveChangesAsync();
+                Order order = _context.Orders.Find(id);
+                order.Subtotal += preciot;
+                order.ValorImpuesto += Math.Round(Convert.ToDecimal(((double)preciot) * 0.18), 2);
+                order.Total += preciot;
+                articulos.Cantidad += orderDetail.CantidadDeArticulos;
+                _context.Update(order);
+                _context.SaveChanges();
+
+                return RedirectToAction("Details", new {id = id});
+            }
+            ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", orderDetail.ID_Comidas);
+            ViewData["ID_Orden"] = new SelectList(_context.Orders, "ID_Orden", "Anotaciones", orderDetail.ID_Orden);
+            return View(orderDetail);
+
+        }
+
+        public async Task<IActionResult> OrderPDF(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var queue = await _context.Orders
+                .FirstOrDefaultAsync(m => m.ID_Orden == id);
+            if (queue == null)
+            {
+                return NotFound();
+            }
+            var OrderViewModel = new OrderViewModel();
+            var orderDetail = new OrderDetail();
+
+            OrderViewModel.Order = await _context.Orders
+                .FirstOrDefaultAsync(m => m.ID_Orden == id);
+            var dataOD = _context.OrderDetails.Include(qd => qd.Order).Include(qd => qd.Food).Where(qd => qd.ID_Orden.Equals(id)).ToList();
+
+            OrderViewModel.Artículos = dataOD;
+
+            ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", orderDetail.ID_Comidas);
+            ViewData["ID_Orden"] = new SelectList(_context.Orders, "ID_Orden", "Anotaciones", orderDetail.ID_Orden);
+            return View(OrderViewModel);
+        }
+
     }
 }
+

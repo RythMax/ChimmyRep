@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TomyChimmy.Data;
 using TomyChimmy.Models;
+using TomyChimmy.ViewModels;
 
 namespace TomyChimmy.Controllers
 {
@@ -42,8 +43,20 @@ namespace TomyChimmy.Controllers
             {
                 return NotFound();
             }
+            var invoiceView = new InvoiceViewModel();
+            var invoiceDetail = new InvoiceDetail();
 
-            return View(invoice);
+            invoiceView.Invoice = await _context.Invoices
+                .Include(i => i.PayingMethod)
+                .Include(i => i.User)
+                .FirstOrDefaultAsync(m => m.Invoice_ID == id);
+            var dataID = _context.InvoiceDetails.Include(od => od.Invoice).Include(od => od.Food).Where(od => od.Invoice_ID.Equals(id)).ToList();
+
+            invoiceView.Articulos = dataID;
+
+            ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", invoiceDetail.ID_Comidas);
+            ViewData["Invoice_ID"] = new SelectList(_context.Invoices, "Invoice_ID", "Apellidos", invoiceDetail.Invoice_ID);
+            return View(invoiceView);
         }
 
         // GET: Invoices/Create
@@ -161,6 +174,75 @@ namespace TomyChimmy.Controllers
         private bool InvoiceExists(int id)
         {
             return _context.Invoices.Any(e => e.Invoice_ID == id);
+        }
+
+        public async Task<IActionResult> _AgregarComida([Bind("InvoiceDetail_ID,ID_Comidas,Cantidad,ValorUnitario,ValorTotal,Invoice_ID")] InvoiceDetail invoiceDetail)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(invoiceDetail);
+
+                int id = invoiceDetail.Invoice_ID;
+
+                int ID_Comidas = invoiceDetail.ID_Comidas;
+
+                Models.Food articulos = _context.Foods.Find(ID_Comidas);
+
+                decimal preciou = articulos.PrecioUnitario;
+                decimal cantidad = invoiceDetail.Cantidad;
+
+                decimal preciot = cantidad * preciou;
+
+                invoiceDetail.ValorUnitario = preciou;
+                invoiceDetail.ValorTotal = preciot;
+
+                await _context.SaveChangesAsync();
+                Models.Invoice invoice = _context.Invoices.Find(id);
+                invoice.Subtotal += preciot;
+                invoice.ValorImpuesto += Math.Round(Convert.ToDecimal(((double)preciot) * 0.18), 2);
+                invoice.Total += preciot;
+                _context.Update(articulos);
+                _context.SaveChanges();
+
+
+                return RedirectToAction("Details", new { id = id });
+            }
+            ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", invoiceDetail.ID_Comidas);
+            ViewData["Invoice_ID"] = new SelectList(_context.Invoices, "Invoice_ID", "Apellidos", invoiceDetail.Invoice_ID);
+            return View(invoiceDetail);
+        }
+
+        public async Task<IActionResult> InvoicePDF(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var invoice = await _context.Invoices
+                .Include(i => i.PayingMethod)
+                .Include(i => i.User)
+                .FirstOrDefaultAsync(m => m.Invoice_ID == id);
+            if (invoice == null)
+            {
+                return NotFound();
+            }
+            var InvoiceViewModel = new InvoiceViewModel();
+            var invoiceDetail = new InvoiceDetail();
+
+            InvoiceViewModel.Invoice = await _context.Invoices
+                .Include(i => i.PayingMethod)
+                .Include(i => i.User)
+                .FirstOrDefaultAsync(m => m.Invoice_ID == id);
+            var dataID = _context.InvoiceDetails.Include(qd => qd.Invoice).Include(qd => qd.Food).Where(qd => qd.Invoice_ID.Equals(id)).ToList();
+
+            InvoiceViewModel.Articulos = dataID;
+
+            ViewData["PayingMethod"] = new SelectList(_context.Invoices, "PayingMethod", "PayingMethod", invoiceDetail.Invoice_ID);
+            ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", invoiceDetail.ID_Comidas);
+            ViewData["Invoice_ID"] = new SelectList(_context.Invoices, "Invoice_ID", "Invoice_ID", invoiceDetail.Invoice_ID);
+
+            return View(InvoiceViewModel);
         }
     }
 }

@@ -210,9 +210,9 @@ namespace TomyChimmy.Controllers
                 await _context.SaveChangesAsync();
                 Models.Queue queue = _context.Queues.Find(id);
                 queue.Subtotal += preciot;
-                queue.ValorImpuesto = impuesto;
+                queue.ValorImpuesto += impuesto;
                 queue.Total = preciot + impuesto;
-                articulos.Cantidad += queueDetail.Cantidad;
+                articulos.Cantidad -= queueDetail.Cantidad;
                 _context.Update(articulos);
                 _context.SaveChanges();
 
@@ -222,6 +222,41 @@ namespace TomyChimmy.Controllers
             ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", queueDetail.ID_Comidas);
             ViewData["Invoice_ID"] = new SelectList(_context.Invoices, "Pedido_ID", "Pedido_ID", queueDetail.Pedido_ID);
             return View(queueDetail);
+        }
+
+        public async Task<IActionResult> QueuePDF(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var queue = await _context.Queues
+                .Include(q => q.PayingMethod)
+                .Include(q => q.Status)
+                .Include(q => q.User)
+                .FirstOrDefaultAsync(m => m.Pedido_ID == id);
+            if (queue == null)
+            {
+                return NotFound();
+            }
+            var queueDetailView = new QueueDetailsView();
+            var queueDetail = new QueueDetail();
+            
+            queueDetailView.Queue = await _context.Queues
+                .Include(q => q.PayingMethod)
+                .Include(q => q.Status)
+                .Include(q => q.User)
+                .FirstOrDefaultAsync(m => m.Pedido_ID == id);
+            var dataQD = _context.QueueDetails.Include(qd => qd.Queue).Include(qd => qd.Food).Where(qd => qd.Pedido_ID.Equals(id)).ToList();
+
+            queueDetailView.Artículos = dataQD;
+
+
+            ViewData["Method_Id"] = new SelectList(_context.PayingMethods, "Method_Id", "FormaDePago", queue.Method_Id);
+            ViewData["ID_Comidas"] = new SelectList(_context.Foods, "ID_Comidas", "Descripción", queueDetail.ID_Comidas);
+            ViewData["Invoice_ID"] = new SelectList(_context.Invoices, "Pedido_ID", "Pedido_ID", queueDetail.Pedido_ID);
+            return View(queueDetailView);
         }
 
     }

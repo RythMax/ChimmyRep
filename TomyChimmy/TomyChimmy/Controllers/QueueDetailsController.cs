@@ -66,7 +66,7 @@ namespace TomyChimmy.Controllers
                 _context.Add(queueDetail);
 
                 int id = queueDetail.Pedido_ID;
-                int id_food = queueDetail.Pedido_ID;
+                int id_food = queueDetail.ID_Comidas;
 
                 Food food = _context.Foods.Find(id_food);
                 decimal preciou = queueDetail.Food.PrecioUnitario;
@@ -80,7 +80,7 @@ namespace TomyChimmy.Controllers
 
                 Queue queue = _context.Queues.Find(id);
                 queue.Subtotal += preciot;
-                queue.ValorImpuesto = 0;
+                queue.ValorImpuesto += Math.Round(Convert.ToDecimal(((double)preciot) * 0.18), 2);
                 queue.Total += preciot;
                 _context.Update(queue);
                 _context.SaveChanges();

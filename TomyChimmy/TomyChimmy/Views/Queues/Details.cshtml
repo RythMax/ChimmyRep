@@ -32,14 +32,14 @@
 
 
 <div>
-    <h4>Orden</h4>
+    <h4>Pedido</h4>
     <hr />
     <div class="clearfix"> </div>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
             <div class="X_panel">
                 <div class="x_title">
-                    <h2>Orde @Html.DisplayFor(model => model.Queue.Pedido_ID)</h2>
+                    <h2>Pedido @Html.DisplayFor(model => model.Queue.Pedido_ID)</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -79,12 +79,12 @@
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Queue.Pedido_ID" class="btn btn-primary">Edit</a> |
-    <a asp-action="Index" class="btn btn-dark">Back to List</a> |
-    <a asp-action="InvoicePDF" asp-route-id="@Model.Queue.Pedido_ID" target="_blank" class="btn btn-md btn-danger">Imprimir</a>
+    <a class="btn btn-outline-dark mt-auto" asp-action="Edit" asp-route-id="@Model.Queue.Pedido_ID">Edit</a> |
+    <a class="btn btn-outline-dark mt-auto" asp-action="Index" >Back to List</a> |
+    <a asp-action="QueuePDF" asp-route-id="@Model.Queue.Pedido_ID" target="_blank" class="btn btn-outline-dark mt-auto">Imprimir</a>
 </div>
 
-                        <div class="card">
+ <div class="card">
     <div class="col-md-12 col-sm-12">
         <div class="X_panel">
             <div class="x_title">
