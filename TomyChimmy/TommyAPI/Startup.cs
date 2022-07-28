@@ -7,12 +7,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TommyAPI.Data;
+using TommyAPI.Installers;
 using TommyAPI.Models;
+using TommyAPI.Options;
+using TommyAPI.Services;
 
 namespace TommyAPI
 {
@@ -28,18 +32,8 @@ namespace TommyAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<TommyAPIContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("TomyChimmyConnection")));
-
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<TommyAPIContext>()
-                .AddDefaultTokenProviders()
-                .AddRoleManager<RoleManager<IdentityRole>>();
-
-            services.AddScoped<DbContext, TommyAPIContext>();
-
+            services.InstallServicesInAssembly(Configuration);
+            services.AddScoped<IIdentityService, IdentityService>();
             //Add ApiKey
         }
 
@@ -51,9 +45,24 @@ namespace TommyAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            var swaggerOptions = new SwaggerOptions();
+            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+
+            app.UseSwagger(option =>
+            {
+                option.RouteTemplate = swaggerOptions.JsonRoute;
+            });
+
+            app.UseSwaggerUI(option =>
+            {
+                option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
+            });
+
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();  
 
             app.UseEndpoints(endpoints =>
             {

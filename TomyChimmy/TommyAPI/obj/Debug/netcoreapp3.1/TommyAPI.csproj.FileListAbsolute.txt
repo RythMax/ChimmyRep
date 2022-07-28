@@ -135,3 +135,17 @@ C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\runt
 C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\obj\Debug\netcoreapp3.1\TommyAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Abstractions.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\TommyAPI.StaticWebAssets.xml
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.Views.V3.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.Views.V4.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Embedded.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\obj\Debug\netcoreapp3.1\staticwebassets\TommyAPI.StaticWebAssets.xml
