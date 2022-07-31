@@ -77,7 +77,7 @@ namespace TomyChimmy.Controllers
                 {
                     ID_Comidas = ID_Comidas,
                     Cantidad = Cantidad,
-                    PreciodeCarro = price,
+                    PreciodeCarro = price * Cantidad,
                     Username = cartUsername
                 };
                 _context.Carts.Add(cart);
@@ -85,6 +85,7 @@ namespace TomyChimmy.Controllers
             else
             {
                 cartItem.Cantidad += Cantidad; //Add the new quantity to the existing quantity
+                cartItem.PreciodeCarro += price * Cantidad;
                 _context.Update(cartItem);
             }
 
@@ -174,7 +175,7 @@ namespace TomyChimmy.Controllers
             queue.UserId = user.Id;
             var cartItems = _context.Carts.Where(c => c.Username == User.Identity.Name);
             decimal cartTotal = (from c in cartItems
-                                 select c.Cantidad * c.PreciodeCarro).Sum();
+                                 select c.PreciodeCarro).Sum();
             decimal cartImp = Math.Round(Convert.ToDecimal(((double)cartTotal) * 0.18), 2);
             decimal cartTotalImp = cartTotal + cartImp;
             queue.Subtotal = cartTotal;

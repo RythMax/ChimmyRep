@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2Zxw5ORkzgjGMGY8F4z39OHR2Ca2Qbg0m4TM+dqJc0czdCnch9+5hypkbZW1T0kbi5q81b8JYkz3JgpG3hqKuw==",
+  "dgSpecHash": "ijwMINdEaKD5mTJoXVbszp+1j9jQrvS1Y2nYMSn3oOLbqPobgY++AJFJ0pBbxYhx22+fzdFAvoOkdCbEvTlERQ==",
   "success": true,
   "projectFilePath": "C:\\Projecto\\AuthenticatedChimmy\\TomyChimmy\\TommyAPI\\TommyAPI.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,8 @@
     "C:\\Users\\abrah\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\abrah\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\3.1.25\\microsoft.aspnetcore.identity.entityframeworkcore.3.1.25.nupkg.sha512",
     "C:\\Users\\abrah\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\3.1.25\\microsoft.aspnetcore.identity.ui.3.1.25.nupkg.sha512",
+    "C:\\Users\\abrah\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.25\\microsoft.aspnetcore.jsonpatch.3.1.25.nupkg.sha512",
+    "C:\\Users\\abrah\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.25\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.25.nupkg.sha512",
     "C:\\Users\\abrah\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "C:\\Users\\abrah\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\3.1.0\\microsoft.aspnetcore.razor.language.3.1.0.nupkg.sha512",
     "C:\\Users\\abrah\\.nuget\\packages\\microsoft.aspnetcore.razor.runtime\\2.2.0\\microsoft.aspnetcore.razor.runtime.2.2.0.nupkg.sha512",
@@ -68,6 +70,7 @@
     "C:\\Users\\abrah\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\abrah\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\abrah\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\abrah\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\abrah\\.nuget\\packages\\nuget.frameworks\\4.7.0\\nuget.frameworks.4.7.0.nupkg.sha512",
     "C:\\Users\\abrah\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\abrah\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

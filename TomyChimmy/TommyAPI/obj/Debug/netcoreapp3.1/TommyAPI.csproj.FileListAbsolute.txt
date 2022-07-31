@@ -149,3 +149,6 @@ C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Micr
 C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Abstractions.dll
 C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Embedded.dll
 C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\obj\Debug\netcoreapp3.1\staticwebassets\TommyAPI.StaticWebAssets.xml
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Projecto\AuthenticatedChimmy\TomyChimmy\TommyAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll

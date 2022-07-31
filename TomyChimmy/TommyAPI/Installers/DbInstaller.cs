@@ -38,6 +38,7 @@ namespace TommyAPI.Installers
             //services.AddScoped<DbContext, TommyAPIContext>();
             
             services.AddControllers();
+            services.AddSession();
         }
     }
 }

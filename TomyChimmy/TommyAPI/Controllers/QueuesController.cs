@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TommyAPI.Data;
 using TommyAPI.Models;
+using TommyAPI.ViewModels;
 
 namespace TommyAPI.Controllers
 {
@@ -105,6 +106,41 @@ namespace TommyAPI.Controllers
         private bool QueueExists(int id)
         {
             return _context.Queues.Any(e => e.Pedido_ID == id);
+        }
+
+        [HttpGet("/detalle/{id}")]
+        public async Task<ActionResult<Queue>> GetQueueDetailed(int id)
+        {
+            var queue = await _context.Queues.FindAsync(id);
+
+            if (queue == null)
+            {
+                return NotFound();
+            }
+            var queuedb = await _context.Queues
+                .Include(q => q.PayingMethod)
+                .Include(q => q.Status)
+                .Include(q => q.User)
+                .FirstOrDefaultAsync(m => m.Pedido_ID == id);
+            if (queuedb == null)
+            {
+                return NotFound(0);
+            }
+
+            var queueDetailView = new QueueDetailsView();
+            var queueDetail = new QueueDetail();
+
+            queueDetailView.Queue = await _context.Queues
+                .Include(q => q.PayingMethod)
+                .Include(q => q.Status)
+                .Include(q => q.User)
+                .FirstOrDefaultAsync(m => m.Pedido_ID == id);
+            var dataQD = _context.QueueDetails.Include(qd => qd.Queue).Include(qd => qd.Food).Where(qd => qd.Pedido_ID.Equals(id)).ToList();
+
+            queueDetailView.Artículos = dataQD;
+
+
+            return Ok(queueDetailView);
         }
     }
 }

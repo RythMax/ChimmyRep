@@ -25,7 +25,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-            total += item.Cantidad * item.PreciodeCarro;
+            total += item.PreciodeCarro;
             <tr>            
             <td>
                 @Html.DisplayFor(modelItem => item.Food.Descripción)

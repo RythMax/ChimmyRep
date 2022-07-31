@@ -22,7 +22,8 @@ namespace TommyAPI.Services
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
-        }
+        }        
+
         public async Task<AuthenticationResult> RegisterAsync(string Email, string Password)
         {
             var existingUser = await _userManager.FindByEmailAsync(Email);
@@ -50,16 +51,46 @@ namespace TommyAPI.Services
                     Errors = createdUser.Errors.Select(x => x.Description)
                 };
             }
+            return GenerateAuthenticationResultForUser(newUser);
+        }
+
+        public async Task<AuthenticationResult> LoginAsync(string Email, string Password)
+        {
+            var user = await _userManager.FindByEmailAsync(Email);
+
+            if (user == null)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "User does not exists" }
+                };
+            }
+
+            var userHasValidPassword = await _userManager.CheckPasswordAsync(user, Password);
+
+            if (!userHasValidPassword)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] {"User/Password combination is wrong"}
+                };
+            }
+
+            return GenerateAuthenticationResultForUser(user);
+        }
+
+        private AuthenticationResult GenerateAuthenticationResultForUser(User user)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, newUser.Email),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, newUser.Email),
-                    new Claim("id", newUser.Id)
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim("id", user.Id)
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
